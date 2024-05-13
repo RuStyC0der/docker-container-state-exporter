@@ -8,6 +8,7 @@ from requests.adapters import HTTPAdapter
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
+# docker section connector classes START
 class DockerConnection(HTTPConnection):
 
     docker_socket_path = "/var/run/docker.sock"
@@ -31,7 +32,9 @@ class DockerConnectionPool(HTTPConnectionPool):
 class DockerAdapter(HTTPAdapter):
     def get_connection(self, url, proxies=None):
         return DockerConnectionPool()
+# docker section connector classes END
 
+# http server and handler classes START
 class MetricsHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
@@ -59,6 +62,7 @@ class MetricsHTTPServer(HTTPServer):
 
     def set_metrics_getter(self, metrics_getter):
         self.metrics_getter = metrics_getter
+# http server and handler classes END
 
 def iso_time_string_to_seconds_timestamp(str_to_parse):
 
