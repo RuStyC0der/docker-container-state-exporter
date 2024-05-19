@@ -8,7 +8,6 @@ from requests.adapters import HTTPAdapter
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-# docker section connector classes START
 class DockerConnection(HTTPConnection):
 
     docker_socket_path = "/var/run/docker.sock"
@@ -32,9 +31,7 @@ class DockerConnectionPool(HTTPConnectionPool):
 class DockerAdapter(HTTPAdapter):
     def get_connection(self, url, proxies=None):
         return DockerConnectionPool()
-# docker section connector classes END
 
-# http server and handler classes START
 class MetricsHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
@@ -62,11 +59,28 @@ class MetricsHTTPServer(HTTPServer):
 
     def set_metrics_getter(self, metrics_getter):
         self.metrics_getter = metrics_getter
-# http server and handler classes END
 
+
+# todo fix python 3.10 and older compatibility (write format string)
 def iso_time_string_to_seconds_timestamp(str_to_parse):
 
-    return int(datetime.fromisoformat(str_to_parse).timestamp())
+    zero_time_string = "0001-01-01T00:00:00Z"
+
+    if str_to_parse == zero_time_string: 
+        return 0
+
+    format_string = "%Y-%m-%dT%H:%M:%S.%f"
+
+    # strip Z and 3 last digin to convert nanosecond into microseconds as soon as strptime does not support nanosecond
+    str_to_parse = str_to_parse[:26]
+
+    timestamp = int(datetime.strptime(str_to_parse, format_string).timestamp())
+
+
+    if timestamp < 0:
+        return 0
+
+    return timestamp
 
 def get_metrics_map_from_raw_info(info_map_list) -> map:
     
