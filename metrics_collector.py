@@ -87,32 +87,32 @@ def get_metrics_map_from_raw_info(info_map_list) -> map:
     metric_name_prefix = "container_status"
 
     metrics_map = {
-        f"${metric_name_prefix}_state": {
+        f"{metric_name_prefix}_state": {
             "type": "gauge",
             "help": "Current state of the container (e.g., running, exited).",
             "values": []
         },
-        f"${metric_name_prefix}_exit_code": {
+        f"{metric_name_prefix}_exit_code": {
             "type": "gauge",
             "help": "Exit code of the container after it stops.",
             "values": []
         },
-        f"${metric_name_prefix}_restart_count": {
+        f"{metric_name_prefix}_restart_count": {
             "type": "counter",
             "help": "Number of times the container has been restarted.",
             "values": []
         },        
-        f"${metric_name_prefix}_started_seconds": {
+        f"{metric_name_prefix}_started_seconds": {
             "type": "gauge",
             "help": "Timestamp indicating when the container was started (in seconds since Unix epoch).",
             "values": []
         },
-        f"${metric_name_prefix}_finished_seconds": {
+        f"{metric_name_prefix}_finished_seconds": {
             "type": "gauge",
             "help": "Timestamp indicating when the container finished (in seconds since Unix epoch).",
             "values": []
         },
-        f"${metric_name_prefix}_created_seconds": {
+        f"{metric_name_prefix}_created_seconds": {
             "type": "gauge",
             "help": "Timestamp indicating when the container was created (in seconds since Unix epoch).",
             "values": []
